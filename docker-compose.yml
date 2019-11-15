@@ -1,0 +1,35 @@
+version: "3"
+services:
+  psql:
+    image: "postgres:11"
+    container_name: "pgdb"
+    environment:
+      - POSTGRES_USER=dbuser
+      - POSTGRES_PASSWORD=qwerty123
+      - POSTGRES_DB=restdb
+    ports:
+      - "54320:5432"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./db-data:/var/lib/postgresql/data
+    networks:
+      - backend
+
+  app:
+    image: app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: /usr/local/bin/app
+    ports:
+      - "8080:8080"
+    environment:
+      DB_HOST: psql
+    depends_on:
+      - psql
+    networks:
+      - backend
+networks:
+  backend:
+volumes:
+  db-data:

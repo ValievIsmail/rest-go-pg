@@ -1,0 +1,276 @@
+openapi: 3.0.0
+info:
+  title: "Rest-go-pg-service"
+  version: "v0.0.1"
+  description: crud app on go with pg db
+  contact:
+    name: Valiev-Ismail
+    email: valiev.ismail.it@gmail.com
+
+servers:
+  - url: http://localhost:8080/api/v1
+    description: "dev server"
+
+paths:
+  /user/:
+    get:
+      tags:
+        - get all users
+      responses: 
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/user"
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error
+  /comment/:
+    get:
+      tags:
+        - get all comments
+      responses: 
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/comment"
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error
+  /comment:
+    get:
+      tags:
+        - comment handler
+      parameters:
+        - in: query
+          name: cid
+          schema:
+            type: integer
+            example: 50
+          required: false
+          description: get comment by id
+      responses: 
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/comment"
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error
+    post:
+      tags:
+        - comment handler
+      requestBody: 
+        description: Create comment
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user_id:
+                  type: integer
+                  example: 7
+                msg:
+                  type: string
+                  example: "test create comment"
+      responses: 
+        '201':
+          description: Status Created
+          content:
+            application/json:
+              schema:
+                type: integer
+                example: 7
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error
+    put:
+      tags:
+        - comment handler
+      requestBody: 
+        description: Update comment
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  example: 5
+                msg:
+                  type: string
+                  example: "test update comment"
+      responses: 
+        '202':
+          description: Status Accepted
+          content:
+            application/json:
+              schema:
+                type: integer
+                example: 5
+        '400':
+          description: Bad request
+        '500':
+          description: Internal Server Error
+    delete:
+      tags:
+        - comment handler
+      parameters:
+        - in: query
+          name: cid
+          schema:
+            type: integer
+            example: 50
+          required: false
+          description: get comment by id
+      responses: 
+        '202':
+          description: Status Accepted
+          content:
+            application/json:
+              schema:
+                type: integer
+                example: 5
+        '400':
+          description: Bad request
+        '500':
+          description: Internal Server Error
+  /user:
+    get:
+      tags:
+        - user handler
+      parameters:
+        - in: query
+          name: uid
+          schema:
+            type: integer
+            example: 50
+          required: false
+          description: get user by id
+      responses: 
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/user"
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error
+    post:
+      tags:
+        - user handler
+      requestBody: 
+        description: Create user
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "tst user name"
+      responses: 
+        '201':
+          description: Status Created
+          content:
+            application/json:
+              schema:
+                type: integer
+                example: 101
+        '400':
+          description: Bad Request
+        '500':
+          description: Internal Server Error
+    put:
+      tags:
+        - user handler
+      requestBody: 
+        description: Update user
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  example: "test update user"
+      responses: 
+        '202':
+          description: Status Accepted
+          content:
+            application/json:
+              schema:
+                type: integer
+                example: 5
+        '400':
+          description: Bad request
+        '500':
+          description: Internal Server Error
+    delete:
+      tags:
+        - user handler
+      parameters:
+        - in: query
+          name: uid
+          schema:
+            type: integer
+            example: 50
+          required: false
+          description: delete user by id
+      responses: 
+        '202':
+          description: Status Accepted
+          content:
+            application/json:
+              schema:
+                type: integer
+                example: 5
+        '400':
+          description: Bad request
+        '500':
+          description: Internal Server Error
+components:
+  schemas:
+    comment:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 2
+        msg:
+          type: string
+          example: "0643b0dbb837d15a1e73d9a2aeed076c"
+        user_id:
+          type: integer
+          example: 2
+        create_dt:
+          type: string
+          example: "2019-11-06 01:00:00"
+    user:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 2
+        name:
+          type: string
+          example: "8b7ddd9e161cbdd4c185e2445e72ffd1"

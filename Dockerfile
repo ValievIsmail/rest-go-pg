@@ -1,10 +1,9 @@
-FROM golang:1.13 AS stage
-ENV CGO_ENABLED 0
-WORKDIR /rest-go-pg
+FROM golang:latest
+LABEL maintaner="Valiev Ismail"
+WORKDIR /app
+COPY go.mod go.sum ./
+RUN go mod download
 COPY . .
-RUN go build -mod=vendor -v -o ./application cmd/*.go
-
-FROM alpine:3.7
-WORKDIR /rest-go-pg
-COPY --from=stage /rest-go-pg/application application
-ENTRYPOINT [ "/rest-go-pg/application" ]
+RUN go build -mod=vendor -v -o ./rest-go-pg cmd/*.go
+EXPOSE 3000
+CMD ["./rest-go-pg"]
